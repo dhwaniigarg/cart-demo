@@ -1110,31 +1110,6 @@ const response = await cartesia.sonic({
             }
         };
 
-        // Audio file mapping (backend integration point)
-        const audioUrls = {
-            'hume': {
-                'pain-assessment': 'https://github.com/dhwaniigarg/demo-/raw/main/hume-pain-assessment.mp3.wav',
-                'medication-confusion': '/api/audio/hume-medication-confusion.mp3',
-                'mental-health': '/api/audio/hume-mental-health.mp3',
-                'post-op': '/api/audio/hume-post-op.mp3',
-                'pediatric': '/api/audio/hume-pediatric.mp3'
-            },
-            'elevenlabs': {
-                'pain-assessment': 'https://github.com/dhwaniigarg/demo-/raw/main/elevenlabs-pain-assessment.wav',
-                'medication-confusion': '/api/audio/elevenlabs-medication-confusion.mp3',
-                'mental-health': '/api/audio/elevenlabs-mental-health.mp3',
-                'post-op': '/api/audio/elevenlabs-post-op.mp3',
-                'pediatric': '/api/audio/elevenlabs-pediatric.mp3'
-            },
-            'cartesia': {
-                'pain-assessment': 'https://github.com/dhwaniigarg/demo-/raw/main/cartesia-pain-assessment.wav',
-                'medication-confusion': '/api/audio/cartesia-medication-confusion.mp3',
-                'mental-health': '/api/audio/cartesia-mental-health.mp3',
-                'post-op': '/api/audio/cartesia-post-op.mp3',
-                'pediatric': '/api/audio/cartesia-pediatric.mp3'
-            }
-        };
-
         let currentScenario = 'pediatric';
         const audioElements = {};
 
@@ -1382,5 +1357,29 @@ const response = await cartesia.sonic({
             loadAudioForScenario(currentScenario);
         });
     </script>
+    <!-- put this once, anywhere above </body> -->
+<audio id="hume-audio" src="hume-pain-assessment.mp3" preload="auto"></audio>
+
+<script>
+  // Make it GLOBAL so inline onclick can find it
+  window.playAudio = function (_key, evt) {
+    try {
+      evt && evt.preventDefault?.();
+
+      const audio = document.getElementById('hume-audio');
+      if (!audio) return;
+
+      // optional: always start from the beginning
+      audio.currentTime = 0;
+
+      // play and swallow the promise to avoid unhandled rejections
+      const p = audio.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    } catch (e) {
+      console.error('playAudio error:', e);
+    }
+  };
+</script>
+    
 </body>
 </html>

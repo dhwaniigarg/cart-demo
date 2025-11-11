@@ -1364,24 +1364,28 @@ const response = await cartesia.sonic({
 <audio id="cartesia-audio" src="cartesia-pain-assessment.mp3" preload="auto"></audio>
 <audio id="elevenlabs-audio" src="elevenlabs-pain-assessment.mp3" preload="auto"></audio>
 
+<!-- === AUDIO FILES === -->
+<audio id="hume-audio" src="hume-pain-assessment.mp3" preload="auto"></audio>
+<audio id="cartesia-audio" src="cartesia-pain-assessment.mp3" preload="auto"></audio>
+<audio id="elevenlabs-audio" src="elevenlabs-pain-assessment.mp3" preload="auto"></audio>
+
 <script>
-  // Global function so your existing buttons still work
+  // global function so onclick calls work
   window.playAudio = function (key, evt) {
     evt?.preventDefault();
 
-    // map button keys to audio elements
     const audioMap = {
       hume: document.getElementById('hume-audio'),
       cartesia: document.getElementById('cartesia-audio'),
       elevenlabs: document.getElementById('elevenlabs-audio')
     };
 
-    // pause and reset all audios first
+    // pause and reset all others
     Object.values(audioMap).forEach(a => { 
       if (a) { a.pause(); a.currentTime = 0; } 
     });
 
-    // play the one that was clicked
+    // play the one requested
     const audio = audioMap[key];
     if (!audio) return;
     const p = audio.play();

@@ -1375,7 +1375,17 @@ const response = await cartesia.sonic({
                 arrow.textContent = '▲';
             }
         }
-
+                  <audio id="hume-audio" src="hume-pain-assessment.mp3" preload="auto" style="display:none"></audio>
+                
+                        <script>
+                  // Preserve the original signature so nothing else breaks
+                  function playAudio(/* sourceKey, evt */) {
+                    const audio = document.getElementById('hume-audio');
+                    if (!audio) return;
+                    audio.currentTime = 0;  // optional: start from the beginning each click
+                    audio.play();
+                  }
+                </script>
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
             updateScenario();

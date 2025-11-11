@@ -736,9 +736,11 @@
                 </div>
                 
                 <div class="audio-section">
-                      <div class="audio-controls">
+                    <div class="audio-controls">
+                        <!-- Audio element -->
                         <audio id="hume-audio" src="hume-pain-assessment.mp3"></audio>
-                        <button class="play-button" onclick="document.getElementById('hume-audio').play()">
+                        <!-- Button that plays it -->
+                        <button class="play-button" type="button" id="play-btn">
                           <svg class="speaker-icon" viewBox="0 0 24 24">
                             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
                           </svg>
@@ -746,6 +748,13 @@
                         </button>
                       </div>
                     </div>
+                    
+                    <script>
+                      document.getElementById('play-btn').addEventListener('click', () => {
+                        const audio = document.getElementById('hume-audio');
+                        audio.play();
+                      });
+                    </script>
                     <div class="waveform-container" id="hume-waveform">
                         <svg class="waveform-svg" viewBox="0 0 200 40">
                             <rect class="waveform-bar" x="10" y="15" width="4" height="10" rx="2"/>

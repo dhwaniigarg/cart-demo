@@ -1369,25 +1369,39 @@ const response = await cartesia.sonic({
 <audio id="cartesia-audio" src="cartesia-pain-assessment.mp3" preload="auto"></audio>
 <audio id="elevenlabs-audio" src="elevenlabs-pain-assessment.mp3" preload="auto"></audio>
 
+<!-- Single shared audio element -->
+<audio id="player" preload="auto"></audio>
+
 <script>
-  // global function so onclick calls work
+  // Global so your existing onclicks still work:
+  //   playAudio('hume', event)
+  //   playAudio('cartesia', event)
+  //   playAudio('elevenlabs', event)
   window.playAudio = function (key, evt) {
     evt?.preventDefault();
 
-    const audioMap = {
-      hume: document.getElementById('hume-audio'),
-      cartesia: document.getElementById('cartesia-audio'),
-      elevenlabs: document.getElementById('elevenlabs-audio')
+    const audio = document.getElementById('player');
+    if (!audio) return;
+
+    // Map keys to filenames (edit names if needed)
+    const srcMap = {
+      hume: 'hume-pain-assessment.mp3',
+      cartesia: 'cartesia-pain-assessment.mp3',   // <-- if your file is actually "cartesias-...", change this line
+      elevenlabs: 'elevenlabs-pain-assessment.mp3'
     };
 
-    // pause and reset all others
-    Object.values(audioMap).forEach(a => { 
-      if (a) { a.pause(); a.currentTime = 0; } 
-    });
+    const nextSrc = srcMap[key];
+    if (!nextSrc) return;
 
-    // play the one requested
-    const audio = audioMap[key];
-    if (!audio) return;
+    // If already set to that file, just restart; otherwise switch source
+    // (endsWith handles relative vs absolute path differences)
+    if (audio.src && audio.src.endsWith(encodeURI(nextSrc))) {
+      audio.currentTime = 0;
+    } else {
+      audio.src = nextSrc;
+      audio.currentTime = 0;
+    }
+
     const p = audio.play();
     if (p && typeof p.catch === 'function') p.catch(() => {});
   };
